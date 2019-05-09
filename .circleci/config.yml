@@ -1,0 +1,30 @@
+version: 2.1
+executors:
+  infrastructure_container:
+    docker:
+      - image: aeternity/infrastructure:Split-terraform-modules-in-separate-repos-PT-165295661
+    working_directory: /infrastructure
+
+commands:
+  setup_secrets:
+    steps:
+      - run:
+          name: Setup Environment
+          command: echo "source import-secrets.sh" >> $BASH_ENV
+
+jobs:
+  validate:
+    executor: infrastructure_container
+    steps:
+      - setup_secrets
+      - run:
+          name: Validate Terraform gateway
+          command: |
+            make terraform-validate-gateway
+
+workflows:
+  test:
+    jobs:
+      - validate:
+          context: ae-infra-manage
+          requires: []
