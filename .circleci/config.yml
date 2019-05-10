@@ -32,6 +32,6 @@ jobs:
 workflows:
   test:
     jobs:
-      - validate:
+      - integration_tests:
           context: ae-infra-manage
           requires: []
