@@ -18,8 +18,8 @@ variable "bootstrap_version" {
   default = "v2.0.1"
 }
 
-variable "test_gateway_dns" {
-  default = "api.test.ops.aeternity.com"
+variable "domain_sfx" {
+  default = ".ops.aeternity.com"
 }
 
 variable "envid" {
@@ -35,11 +35,11 @@ module "aws_deploy-test-gw" {
   vault_addr        = "${var.vault_addr}"
 
   static_nodes      = 0
-  spot_nodes        = 0
+  spot_nodes        = 2
   gateway_nodes_min = 1
   gateway_nodes_max = 1
   dns_zone          = "${var.dns_zone}"
-  gateway_dns       = "origin-${var.test_gateway_dns}"
+  gateway_dns       = "origin-${var.envid}${var.domain_sfx}"
   spot_price        = "0.15"
   instance_type     = "t3.large"
   ami_name          = "aeternity-ubuntu-16.04-v1549009934"
@@ -67,6 +67,6 @@ module "aws_gateway" {
 
   loadbalancers_regions = ["ap-southeast-2"]
 
-  api_dns   = "${var.test_gateway_dns}"
-  api_alias = "${var.test_gateway_dns}"
+  api_dns   = "${var.envid}${var.domain_sfx}"
+  api_alias = "${var.envid}${var.domain_sfx}"
 }
