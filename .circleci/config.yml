@@ -2,25 +2,32 @@ version: 2.1
 executors:
   infrastructure_container:
     docker:
-      - image: aeternity/infrastructure:Split-terraform-modules-in-separate-repos-PT-165295661
-    working_directory: /infrastructure
+      - image: aeternity/infrastructure:master
+    working_directory: /src
 
 commands:
+  integration_tests:
+    description: "Integration Tests"
+    steps:
+      - run:
+          name: Integration Tests
+          command: |
+            export TF_VAR_envid="tf_test_api_gw_${CIRCLE_JOB}_${CIRCLE_SHA1}"
+            cd test && terraform init && terraform validate && terraform fmt -check=true -diff=true && terraform plan
+
   setup_secrets:
     steps:
       - run:
           name: Setup Environment
-          command: echo "source import-secrets.sh" >> $BASH_ENV
+          command: echo "source /infrastructure/import-secrets.sh" >> $BASH_ENV
 
 jobs:
-  validate:
+  integration_tests:
     executor: infrastructure_container
     steps:
+      - checkout
       - setup_secrets
-      - run:
-          name: Validate Terraform gateway
-          command: |
-            make terraform-validate-gateway
+      - integration_tests
 
 workflows:
   test:
