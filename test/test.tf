@@ -65,11 +65,11 @@ module "aws_gateway" {
   source   = "../"
   dns_zone = "${var.dns_zone}"
 
-  loadbalancers = [ "${module.aws_deploy-test-gw.gateway_lb_dns}" ]
+  loadbalancers = ["${module.aws_deploy-test-gw.gateway_lb_dns}"]
 
-  loadbalancers_zones = [ "${module.aws_deploy-test-gw.gateway_lb_zone_id}" ]
+  loadbalancers_zones = ["${module.aws_deploy-test-gw.gateway_lb_zone_id}"]
 
-  loadbalancers_regions = [ "ap-southeast-2" ]
+  loadbalancers_regions = ["ap-southeast-2"]
 
   api_dns   = "${var.test_gateway_dns}"
   api_alias = "${var.test_gateway_dns}"
