@@ -28,7 +28,7 @@ variable "envid" {
 
 module "aws_deploy-test-gw" {
   source            = "github.com/aeternity/terraform-aws-aenode-deploy?ref=v1.0.0"
-  env               = "api_test"
+  env               = "test"
   envid             = "${var.envid}"
   bootstrap_version = "${var.bootstrap_version}"
   vault_role        = "ae-node"
@@ -43,10 +43,6 @@ module "aws_deploy-test-gw" {
   spot_price        = "0.15"
   instance_type     = "t3.large"
   ami_name          = "aeternity-ubuntu-16.04-v1549009934"
-  root_volume_size  = 8
-
-  additional_storage      = 1
-  additional_storage_size = 30
 
   aeternity = {
     package = "https://releases.ops.aeternity.com/aeternity-2.3.0-ubuntu-x86_64.tar.gz"
