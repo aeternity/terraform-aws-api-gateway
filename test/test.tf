@@ -63,7 +63,7 @@ module "aws_deploy-test-gw" {
   }
 }
 
-module "aws_gateway" {
+module "aws_test_gateway" {
   providers = {
     aws = "aws.us-east-1"
   }

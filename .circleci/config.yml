@@ -24,7 +24,7 @@ commands:
       - run:
           name: Integration environment health check
           command: |
-            ./test/health-check.sh
+            cd test && ./health-check.sh
       - run:
           name: Integration environment cleanup
           command: |
