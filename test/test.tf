@@ -75,4 +75,6 @@ module "aws_gateway" {
 
   api_dns   = "${replace(var.envid, "_", "-")}${var.domain_sfx}"
   api_alias = "${replace(var.envid, "_", "-")}${var.domain_sfx}"
+
+  validate_cert = true
 }
