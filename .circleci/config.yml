@@ -10,16 +10,27 @@ commands:
     description: "Integration Tests"
     steps:
       - run:
-          name: Integration Tests
+          name: Terraform init
           command: |
-            export TF_VAR_envid="tf_test_api_gw_${CIRCLE_JOB}_${CIRCLE_SHA1}"
-            cd test && terraform init && terraform validate && terraform fmt -check=true -diff=true && terraform plan
+            cd test && terraform init
+      - run:
+          name: Terraform lint and validate
+          command: |
+            cd test && terraform fmt -check=true -diff=true && terraform validate
 
   setup_secrets:
     steps:
       - run:
           name: Setup Environment
           command: echo "source /infrastructure/import-secrets.sh" >> $BASH_ENV
+
+  setup_test_environment:
+    steps:
+      - run:
+          name: Setup test environment
+          command: |
+            echo 'export TF_VAR_envid="tf_test_gw_${CIRCLE_SHA1}"' >> $BASH_ENV
+            echo 'export TF_VAR_env_domain="${CIRCLE_SHA1}"' >> $BASH_ENV
 
 jobs:
   integration_tests:
