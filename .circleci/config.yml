@@ -17,6 +17,19 @@ commands:
           name: Terraform lint and validate
           command: |
             cd test && terraform fmt -check=true -diff=true && terraform validate
+      - run:
+          name: Integration environment setup
+          command: |
+            cd test && terraform apply -parallelism=20 --auto-approve
+      - run:
+          name: Integration environment health check
+          command: |
+            ./test/health-check.sh
+      - run:
+          name: Integration environment cleanup
+          command: |
+            cd test && terraform destroy -parallelism=20 --auto-approve
+          when: always
 
   setup_secrets:
     steps:
