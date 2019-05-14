@@ -38,6 +38,7 @@ jobs:
     steps:
       - checkout
       - setup_secrets
+      - setup_test_environment
       - integration_tests
 
 workflows:
