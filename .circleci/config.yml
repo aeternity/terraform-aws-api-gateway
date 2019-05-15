@@ -1,0 +1,62 @@
+version: 2.1
+executors:
+  infrastructure_container:
+    docker:
+      - image: aeternity/infrastructure
+    working_directory: /src
+
+commands:
+  integration_tests:
+    description: "Integration Tests"
+    steps:
+      - run:
+          name: Terraform init
+          command: |
+            cd test && terraform init
+      - run:
+          name: Terraform lint and validate
+          command: |
+            cd test && terraform fmt -check=true -diff=true && terraform validate
+      - run:
+          name: Integration environment setup
+          command: |
+            cd test && terraform apply -parallelism=20 --auto-approve
+      - run:
+          name: Integration environment health check
+          command: |
+            cd test && ./health-check.sh
+      - run:
+          name: Integration environment cleanup
+          command: |
+            cd test && terraform destroy -parallelism=20 --auto-approve
+          when: always
+
+  setup_secrets:
+    steps:
+      - run:
+          name: Setup Environment
+          command: echo "source /infrastructure/import-secrets.sh" >> $BASH_ENV
+
+  setup_test_environment:
+    steps:
+      - run:
+          name: Setup test environment
+          command: |
+            echo 'export TF_VAR_envid="tf_test_gw_${CIRCLE_SHA1}"' >> $BASH_ENV
+            echo 'export TF_VAR_env_domain="${CIRCLE_SHA1}"' >> $BASH_ENV
+
+jobs:
+  integration_tests:
+    executor: infrastructure_container
+    steps:
+      - checkout
+      - setup_secrets
+      - setup_test_environment
+      - integration_tests
+
+workflows:
+  test:
+    jobs:
+      - integration_tests:
+          context: ae-infra-manage
+          requires: []
