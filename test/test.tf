@@ -3,7 +3,7 @@ variable "dns_zone" {
 }
 
 provider "aws" {
-  version                 = "1.55"
+  version                 = "2.6.0"
   region                  = "ap-southeast-2"
   alias                   = "ap-southeast-2"
   shared_credentials_file = "/aws/credentials"
@@ -11,7 +11,7 @@ provider "aws" {
 }
 
 provider "aws" {
-  version = "1.55"
+  version = "2.6.0"
   region  = "us-east-1"
   alias   = "us-east-1"
 }
@@ -78,7 +78,7 @@ module "aws_test_gateway" {
   loadbalancers_regions = ["ap-southeast-2"]
 
   api_dns   = "${substr(var.env_domain, 0, 15)}${var.domain_sfx}"
-  api_alias = "${substr(var.env_domain , 0, 15)}${var.domain_sfx}"
+  api_alias = "${substr(var.env_domain, 0, 15)}${var.domain_sfx}"
 
   validate_cert = true
 }
