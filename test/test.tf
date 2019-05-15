@@ -36,8 +36,12 @@ variable "env_domain" {
   default = "test-tf-gateway"
 }
 
+variable "package" {
+  default = "https://s3.eu-central-1.amazonaws.com/aeternity-node-builds/aeternity-latest-ubuntu-x86_64.tar.gz"
+}
+
 module "aws_deploy-test-gw" {
-  source            = "github.com/aeternity/terraform-aws-aenode-deploy?ref=v1.0.0"
+  source            = "github.com/aeternity/terraform-aws-aenode-deploy"
   env               = "test"
   envid             = "${var.envid}"
   bootstrap_version = "${var.bootstrap_version}"
@@ -52,10 +56,10 @@ module "aws_deploy-test-gw" {
   gateway_dns       = "origin-${lenght(substr(var.env_domain, 0, 15))}${var.domain_sfx}"
   spot_price        = "0.15"
   instance_type     = "t3.large"
-  ami_name          = "aeternity-ubuntu-16.04-v1549009934"
+  ami_name          = "aeternity-ubuntu-16.04-*"
 
   aeternity = {
-    package = "https://releases.ops.aeternity.com/aeternity-latest-ubuntu-x86_64.tar.gz"
+    package = "${var.package}"
   }
 
   providers = {
@@ -71,10 +75,8 @@ module "aws_test_gateway" {
   source   = "../"
   dns_zone = "${var.dns_zone}"
 
-  loadbalancers = ["${module.aws_deploy-test-gw.gateway_lb_dns}"]
-
-  loadbalancers_zones = ["${module.aws_deploy-test-gw.gateway_lb_zone_id}"]
-
+  loadbalancers         = ["${module.aws_deploy-test-gw.gateway_lb_dns}"]
+  loadbalancers_zones   = ["${module.aws_deploy-test-gw.gateway_lb_zone_id}"]
   loadbalancers_regions = ["ap-southeast-2"]
 
   api_dns   = "${substr(var.env_domain, 0, 15)}${var.domain_sfx}"
