@@ -59,7 +59,8 @@ resource "aws_cloudfront_distribution" "cf" {
       query_string = true
 
       cookies {
-        forward = "none"
+        forward           = "whitelist"
+        whitelisted_names = ["AWSALB"]
       }
     }
 
