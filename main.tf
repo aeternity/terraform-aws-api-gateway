@@ -4,24 +4,6 @@ resource "aws_acm_certificate" "cert" {
   subject_alternative_names = ["${var.api_alias}"]
 }
 
-resource "aws_route53_record" "cert_validation" {
-  count   = "${var.validate_cert ? 1: 0}"
-  name    = "${aws_acm_certificate.cert.domain_validation_options.0.resource_record_name}"
-  type    = "${aws_acm_certificate.cert.domain_validation_options.0.resource_record_type}"
-  zone_id = "${var.dns_zone}"
-  records = ["${aws_acm_certificate.cert.domain_validation_options.0.resource_record_value}"]
-  ttl     = 60
-}
-
-resource "aws_acm_certificate_validation" "cert" {
-  count           = "${var.validate_cert ? 1: 0}"
-  certificate_arn = "${aws_acm_certificate.cert.arn}"
-
-  validation_record_fqdns = [
-    "${aws_route53_record.cert_validation.fqdn}",
-  ]
-}
-
 resource "aws_route53_record" "main-api" {
   zone_id = "${var.dns_zone}"
   name    = "${var.api_dns}"
@@ -79,7 +61,7 @@ resource "aws_cloudfront_distribution" "cf" {
   aliases = ["${var.api_dns}", "${var.api_alias}"]
 
   viewer_certificate {
-    acm_certificate_arn = "${var.validate_cert ? aws_acm_certificate_validation.cert.certificate_arn : aws_acm_certificate.cert.arn}"
+    acm_certificate_arn = "${aws_acm_certificate.cert.arn}"
 
     ssl_support_method       = "sni-only"
     minimum_protocol_version = "TLSv1.1_2016"

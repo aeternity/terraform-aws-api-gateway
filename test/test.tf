@@ -84,6 +84,4 @@ module "aws_test_gateway" {
 
   api_dns   = "${substr(var.env_domain, 0, 15)}${var.domain_sfx}"
   api_alias = "${substr(var.env_domain, 0, 15)}${var.domain_sfx}"
-
-  validate_cert = true
 }
