@@ -15,6 +15,4 @@ variable "loadbalancers_regions" {
 variable "api_dns" {}
 variable "api_alias" {}
 
-variable "validate_cert" {
-  default = false
-}
+variable "certificate_arn" {}

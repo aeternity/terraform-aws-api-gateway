@@ -3,15 +3,13 @@ variable "dns_zone" {
 }
 
 provider "aws" {
-  version                 = "2.6.0"
-  region                  = "ap-southeast-2"
-  alias                   = "ap-southeast-2"
-  shared_credentials_file = "/aws/credentials"
-  profile                 = "aeternity"
+  version = "2.16.0"
+  region  = "ap-southeast-2"
+  alias   = "ap-southeast-2"
 }
 
 provider "aws" {
-  version = "2.6.0"
+  version = "2.16.0"
   region  = "us-east-1"
   alias   = "us-east-1"
 }
@@ -38,6 +36,36 @@ variable "env_domain" {
 
 variable "package" {
   default = "https://s3.eu-central-1.amazonaws.com/aeternity-node-builds/aeternity-latest-ubuntu-x86_64.tar.gz"
+}
+
+locals {
+  api_dns   = "${substr(var.env_domain, 0, 15)}${var.domain_sfx}"
+  api_alias = "${substr(var.env_domain, 0, 15)}${var.domain_sfx}"
+}
+
+resource "aws_acm_certificate" "cert" {
+  domain_name               = "${local.api_dns}"
+  subject_alternative_names = ["${local.api_alias}"]
+  validation_method         = "DNS"
+
+  provider = "aws.us-east-1"
+}
+
+resource "aws_route53_record" "cert_validation" {
+  zone_id = "${var.dns_zone}"
+  name    = "${aws_acm_certificate.cert.domain_validation_options.0.resource_record_name}"
+  type    = "${aws_acm_certificate.cert.domain_validation_options.0.resource_record_type}"
+  records = ["${aws_acm_certificate.cert.domain_validation_options.0.resource_record_value}"]
+  ttl     = 60
+
+  provider = "aws.us-east-1"
+}
+
+resource "aws_acm_certificate_validation" "cert" {
+  certificate_arn         = "${aws_acm_certificate.cert.arn}"
+  validation_record_fqdns = ["${aws_route53_record.cert_validation.fqdn}"]
+
+  provider = "aws.us-east-1"
 }
 
 module "aws_deploy-test-gw" {
@@ -82,8 +110,8 @@ module "aws_test_gateway" {
   loadbalancers_zones   = ["${module.aws_deploy-test-gw.gateway_lb_zone_id}"]
   loadbalancers_regions = ["ap-southeast-2"]
 
-  api_dns   = "${substr(var.env_domain, 0, 15)}${var.domain_sfx}"
-  api_alias = "${substr(var.env_domain, 0, 15)}${var.domain_sfx}"
+  api_dns   = "${local.api_dns}"
+  api_alias = "${local.api_alias}"
 
-  validate_cert = true
+  certificate_arn = "${aws_acm_certificate_validation.cert.certificate_arn}"
 }
