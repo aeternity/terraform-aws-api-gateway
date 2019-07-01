@@ -16,3 +16,4 @@ variable "api_dns" {}
 variable "api_alias" {}
 
 variable "certificate_arn" {}
+variable "env" {}
