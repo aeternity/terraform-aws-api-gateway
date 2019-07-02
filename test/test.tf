@@ -39,8 +39,9 @@ variable "package" {
 }
 
 locals {
-  api_dns   = "${substr(var.env_domain, 0, 15)}${var.domain_sfx}"
-  api_alias = "${substr(var.env_domain, 0, 15)}${var.domain_sfx}"
+  api_dns     = "${substr(var.env_domain, 0, 15)}${var.domain_sfx}"
+  api_alias   = "${substr(var.env_domain, 0, 15)}${var.domain_sfx}"
+  api_aliases = ["${substr(var.env_domain, 0, 15)}-2nd${var.domain_sfx}"]
 }
 
 resource "aws_acm_certificate" "cert" {

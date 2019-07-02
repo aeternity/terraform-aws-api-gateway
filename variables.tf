@@ -13,6 +13,14 @@ variable "loadbalancers_regions" {
 }
 
 variable "api_dns" {}
-variable "api_alias" {}
+
+variable "api_alias" {
+  default = ""
+}
+
+variable "api_aliases" {
+  type    = "list"
+  default = []
+}
 
 variable "certificate_arn" {}
