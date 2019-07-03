@@ -52,7 +52,7 @@ resource "aws_cloudfront_distribution" "cf" {
     }
   }
 
-  aliases = ["${var.api_dns}", "${var.api_alias}"]
+  aliases = "${compact(concat(list(var.api_dns), list(var.api_alias), var.api_aliases))}"
 
   viewer_certificate {
     acm_certificate_arn = "${var.certificate_arn}"
