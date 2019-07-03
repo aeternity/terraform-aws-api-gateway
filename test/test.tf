@@ -46,7 +46,7 @@ locals {
 
 resource "aws_acm_certificate" "cert" {
   domain_name               = "${local.api_dns}"
-  subject_alternative_names = ["${local.api_alias}"]
+  subject_alternative_names = "${concat(local.api_aliases, list(local.api_alias))}"
   validation_method         = "DNS"
 
   provider = "aws.us-east-1"
@@ -111,8 +111,9 @@ module "aws_test_gateway" {
   loadbalancers_zones   = ["${module.aws_deploy-test-gw.gateway_lb_zone_id}"]
   loadbalancers_regions = ["ap-southeast-2"]
 
-  api_dns   = "${local.api_dns}"
-  api_alias = "${local.api_alias}"
+  api_dns     = "${local.api_dns}"
+  api_alias   = "${local.api_alias}"
+  api_aliases = "${local.api_aliases}"
 
   certificate_arn = "${aws_acm_certificate_validation.cert.certificate_arn}"
 }
