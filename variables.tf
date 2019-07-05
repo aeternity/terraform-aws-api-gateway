@@ -24,3 +24,4 @@ variable "api_aliases" {
 }
 
 variable "certificate_arn" {}
+variable "env" {}

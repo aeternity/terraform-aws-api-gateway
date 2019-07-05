@@ -60,6 +60,10 @@ resource "aws_cloudfront_distribution" "cf" {
     ssl_support_method       = "sni-only"
     minimum_protocol_version = "TLSv1.1_2016"
   }
+
+  tags = {
+    env = "${var.env}"
+  }
 }
 
 resource "aws_route53_health_check" "health" {
@@ -71,6 +75,10 @@ resource "aws_route53_health_check" "health" {
   measure_latency   = false
   failure_threshold = "4"
   request_interval  = 30
+
+  tags = {
+    env = "${var.env}"
+  }
 }
 
 resource "aws_route53_record" "origin-api" {

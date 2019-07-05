@@ -115,4 +115,5 @@ module "aws_test_gateway" {
   api_alias = "${local.api_alias}"
 
   certificate_arn = "${aws_acm_certificate_validation.cert.certificate_arn}"
+  env             = "test"
 }
