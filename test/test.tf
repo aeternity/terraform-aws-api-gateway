@@ -2,16 +2,16 @@ variable "dns_zone" {
   default = "Z2J3KVPABDNIL1"
 }
 
+# Default provider
 provider "aws" {
   version = "2.16.0"
-  region  = "ap-southeast-2"
-  alias   = "ap-southeast-2"
+  region  = "us-east-1"
 }
 
 provider "aws" {
   version = "2.16.0"
-  region  = "us-east-1"
-  alias   = "us-east-1"
+  region  = "ap-southeast-2"
+  alias   = "ap-southeast-2"
 }
 
 variable "vault_addr" {
@@ -46,10 +46,8 @@ locals {
 
 resource "aws_acm_certificate" "cert" {
   domain_name               = "${local.api_dns}"
-  subject_alternative_names = ["${local.api_alias}"]
+  subject_alternative_names = "${concat(local.api_aliases, list(local.api_alias))}"
   validation_method         = "DNS"
-
-  provider = "aws.us-east-1"
 }
 
 resource "aws_route53_record" "cert_validation" {
@@ -58,15 +56,23 @@ resource "aws_route53_record" "cert_validation" {
   type    = "${aws_acm_certificate.cert.domain_validation_options.0.resource_record_type}"
   records = ["${aws_acm_certificate.cert.domain_validation_options.0.resource_record_value}"]
   ttl     = 60
+}
 
-  provider = "aws.us-east-1"
+resource "aws_route53_record" "cert_validation_alt1" {
+  zone_id = "${var.dns_zone}"
+  name    = "${aws_acm_certificate.cert.domain_validation_options.1.resource_record_name}"
+  type    = "${aws_acm_certificate.cert.domain_validation_options.1.resource_record_type}"
+  records = ["${aws_acm_certificate.cert.domain_validation_options.1.resource_record_value}"]
+  ttl     = 60
 }
 
 resource "aws_acm_certificate_validation" "cert" {
-  certificate_arn         = "${aws_acm_certificate.cert.arn}"
-  validation_record_fqdns = ["${aws_route53_record.cert_validation.fqdn}"]
+  certificate_arn = "${aws_acm_certificate.cert.arn}"
 
-  provider = "aws.us-east-1"
+  validation_record_fqdns = [
+    "${aws_route53_record.cert_validation_alt1.fqdn}",
+    "${aws_route53_record.cert_validation.fqdn}",
+  ]
 }
 
 module "aws_deploy-test-gw" {
@@ -100,10 +106,6 @@ module "aws_deploy-test-gw" {
 }
 
 module "aws_test_gateway" {
-  providers = {
-    aws = "aws.us-east-1"
-  }
-
   source   = "../"
   dns_zone = "${var.dns_zone}"
 
@@ -111,8 +113,9 @@ module "aws_test_gateway" {
   loadbalancers_zones   = ["${module.aws_deploy-test-gw.gateway_lb_zone_id}"]
   loadbalancers_regions = ["ap-southeast-2"]
 
-  api_dns   = "${local.api_dns}"
-  api_alias = "${local.api_alias}"
+  api_dns     = "${local.api_dns}"
+  api_alias   = "${local.api_alias}"
+  api_aliases = "${local.api_aliases}"
 
   certificate_arn = "${aws_acm_certificate_validation.cert.certificate_arn}"
   env             = "test"
