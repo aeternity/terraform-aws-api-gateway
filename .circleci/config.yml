@@ -48,7 +48,6 @@ commands:
           command: |
             echo 'export TF_VAR_vault_addr="$(</secrets/VAULT_ADDR)"' >> $BASH_ENV
             echo 'export TF_VAR_envid="tf_test_gw_${CIRCLE_SHA1}"' >> $BASH_ENV
-            echo 'export TF_VAR_env_domain="${CIRCLE_SHA1}"' >> $BASH_ENV
 
 jobs:
   integration_tests:
