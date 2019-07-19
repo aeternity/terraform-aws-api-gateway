@@ -1,7 +1,7 @@
 locals {
-  api_domain  = format("%s%s", substr(var.envid, 0, 15), var.domain_sfx)
-  api_aliases = [format("alias-%s%s", substr(var.envid, 0, 15), var.domain_sfx)]
-  lb_fqdn     = format("lb-%s%s", substr(var.envid, 0, 15), var.domain_sfx)
+  api_domain  = format("gw%s%s", var.envid, var.domain_sfx)
+  api_aliases = [format("alias%s%s", var.envid, var.domain_sfx)]
+  lb_fqdn     = format("lb%s%s", var.envid, var.domain_sfx)
 }
 
 # TODO - change module source once it is merged to master

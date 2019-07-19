@@ -2,7 +2,7 @@
 
 set -Eeuo pipefail
 
-API_ADDR=$(~/bin/terraform output -json |jq -r '."api_gate_fqdn"."value"')
+API_ADDR=$(terraform output -json |jq -r '."api_gate_fqdn"."value"')
 
 # Basic health check endpoint
 curl -sSf -o /dev/null --retry 10 --retry-connrefused https://${API_ADDR}/healthz
