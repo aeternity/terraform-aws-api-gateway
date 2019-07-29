@@ -2,9 +2,6 @@ resource "aws_cloudfront_distribution" "api_gate" {
   enabled = true
   aliases = "${compact(concat(list(var.api_domain), var.api_aliases))}"
 
-  # DURING MANUAL TEST ONLY
-  wait_for_deployment = false
-
   origin {
     domain_name = var.lb_fqdn
     origin_id   = "api_lb"
