@@ -4,9 +4,8 @@ locals {
   lb_fqdn     = format("lb%s%s", var.envid, var.domain_sfx)
 }
 
-# TODO - change module source once it is merged to master
 module "test_nodes_sydney" {
-  source            = "github.com/aeternity/terraform-aws-aenode-deploy?ref=refactor"
+  source            = "github.com/aeternity/terraform-aws-aenode-deploy?ref=master"
   env               = "test"
   envid             = "${var.envid}"
   bootstrap_version = "${var.bootstrap_version}"
@@ -35,9 +34,8 @@ module "test_nodes_sydney" {
   }
 }
 
-# TODO - change module source once it is merged to master
 module "test_lb_sydney" {
-  source                    = "github.com/aeternity/terraform-aws-api-loadbalancer?ref=initial_module"
+  source                    = "github.com/aeternity/terraform-aws-api-loadbalancer?ref=master"
   fqdn                      = "${local.lb_fqdn}"
   dns_zone                  = "${var.dns_zone}"
   security_group            = "${module.test_nodes_sydney.sg_id}"
