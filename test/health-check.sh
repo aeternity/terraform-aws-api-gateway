@@ -2,8 +2,26 @@
 
 set -Eeuo pipefail
 
-main_api_name=$(terraform output -json |jq -r '."main-api-name"."value"')
-origin_api_name=$(terraform output -json |jq -r '."origin-api-name"."value"')
+API_ADDR=$(terraform output -json |jq -r '."api_gate_fqdn"."value"')
 
-curl -s -f -S -L -o /dev/null --retry 10 --retry-connrefused http://${main_api_name}/v2/status
-curl -s -f -S -o /dev/null --retry 10 --retry-connrefused http://${origin_api_name}:8080/healthz
+# Basic health check endpoint
+curl -sSf -o /dev/null --retry 10 --retry-connrefused https://${API_ADDR}/healthz
+
+# HTTP -> HTTPS redirect
+curl -sSf -L -o /dev/null --retry 10 --retry-connrefused http://${API_ADDR}/v2/status
+
+# External API
+curl -sSf -o /dev/null --retry 10 --retry-connrefused https://${API_ADDR}/v2/status
+
+# Internal API (dry-run)
+EXT_STATUS=$(curl -sS -o /dev/null --retry 10 --retry-connrefused \
+    -X POST -H 'Content-type: application/json' -d '{}' \
+    -w "%{http_code}" \
+    https://${API_ADDR}/v2/debug/transactions/dry-run)
+[ $EXT_STATUS -eq 400 ]
+
+# State Channels WebSocket API
+WS_STATUS=$(curl -sS -o /dev/null --retry 10 --retry-connrefused \
+    -w "%{http_code}" \
+    https://${API_ADDR}/channel)
+[ $WS_STATUS -eq 426 ]
