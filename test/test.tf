@@ -51,6 +51,7 @@ module "test_lb_sydney" {
 
 module "test_gateway" {
   source          = "../"
+  env             = "test"
   dns_zone        = "${var.dns_zone}"
   api_domain      = "${local.api_domain}"
   api_aliases     = "${local.api_aliases}"
