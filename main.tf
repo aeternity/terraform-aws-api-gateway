@@ -30,6 +30,9 @@ resource "aws_cloudfront_distribution" "api_gate" {
     compress               = true
     viewer_protocol_policy = "redirect-to-https"
     target_origin_id       = "api_lb"
+    min_ttl                = 0
+    default_ttl            = 0
+    max_ttl                = 31536000
   }
 
   restrictions {
