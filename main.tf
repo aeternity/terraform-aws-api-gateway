@@ -14,6 +14,18 @@ resource "aws_cloudfront_distribution" "api_gate" {
     }
   }
 
+  origin {
+    domain_name = var.mdw_fqdn
+    origin_id   = "api_mdw"
+
+    custom_origin_config {
+      http_port              = 80
+      https_port             = 443
+      origin_protocol_policy = "http-only"
+      origin_ssl_protocols   = ["TLSv1.2"]
+    }
+  }
+
   default_cache_behavior {
     allowed_methods = ["HEAD", "DELETE", "POST", "GET", "OPTIONS", "PUT", "PATCH"]
     cached_methods  = ["GET", "HEAD"]
@@ -30,6 +42,28 @@ resource "aws_cloudfront_distribution" "api_gate" {
     compress               = true
     viewer_protocol_policy = "redirect-to-https"
     target_origin_id       = "api_lb"
+    min_ttl                = 0
+    default_ttl            = 0
+    max_ttl                = 31536000
+  }
+
+  middleware_cache_behavior {
+    path_pattern    = "/middleware/*"
+    allowed_methods = ["HEAD", "DELETE", "POST", "GET", "OPTIONS", "PUT", "PATCH"]
+    cached_methods  = ["GET", "HEAD"]
+
+    forwarded_values {
+      query_string = true
+
+      cookies {
+        forward           = "whitelist"
+        whitelisted_names = ["AWSALB"]
+      }
+    }
+
+    compress               = true
+    viewer_protocol_policy = "redirect-to-https"
+    target_origin_id       = "api_mdw"
     min_ttl                = 0
     default_ttl            = 0
     max_ttl                = 31536000
