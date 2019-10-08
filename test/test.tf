@@ -2,6 +2,7 @@ locals {
   api_domain  = format("gw%s%s", var.envid, var.domain_sfx)
   api_aliases = [format("alias%s%s", var.envid, var.domain_sfx)]
   lb_fqdn     = format("lb%s%s", var.envid, var.domain_sfx)
+  mdw_fqdn    = format("mdw%s%s", var.envid, var.domain_sfx)
 }
 
 module "test_nodes_sydney" {
@@ -57,4 +58,5 @@ module "test_gateway" {
   api_aliases     = "${local.api_aliases}"
   certificate_arn = "${aws_acm_certificate_validation.cert.certificate_arn}"
   lb_fqdn         = "${local.lb_fqdn}"
+  mdw_fqdn        = "${local.mdw_fqdn}"
 }
