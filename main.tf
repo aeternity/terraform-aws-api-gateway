@@ -47,7 +47,7 @@ resource "aws_cloudfront_distribution" "api_gate" {
     max_ttl                = 31536000
   }
 
-  middleware_cache_behavior {
+  ordered_cache_behavior {
     path_pattern    = "/middleware/*"
     allowed_methods = ["HEAD", "DELETE", "POST", "GET", "OPTIONS", "PUT", "PATCH"]
     cached_methods  = ["GET", "HEAD"]
