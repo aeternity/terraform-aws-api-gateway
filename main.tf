@@ -21,8 +21,8 @@ resource "aws_cloudfront_distribution" "api_gate" {
     custom_origin_config {
       http_port              = 80
       https_port             = 443
-      origin_protocol_policy = "http-only"
-      origin_ssl_protocols   = ["TLSv1.2"]
+      origin_protocol_policy = "https-only"
+      origin_ssl_protocols   = ["TLSv1.3"]
     }
   }
 
@@ -54,11 +54,6 @@ resource "aws_cloudfront_distribution" "api_gate" {
 
     forwarded_values {
       query_string = true
-
-      cookies {
-        forward           = "whitelist"
-        whitelisted_names = ["AWSALB"]
-      }
     }
 
     compress               = true
