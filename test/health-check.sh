@@ -15,13 +15,13 @@ curl -sSf -o /dev/null --retry 10 --retry-connrefused https://${API_ADDR}/v2/sta
 
 # Internal API (dry-run)
 EXT_STATUS=$(curl -sS -o /dev/null --retry 10 --retry-connrefused \
-    -X POST -H 'Content-type: application/json' -d '{}' \
+    -X POST -H 'Content-type: application/json' -d '{"txs": []}' \
     -w "%{http_code}" \
     https://${API_ADDR}/v2/debug/transactions/dry-run)
-[ $EXT_STATUS -eq 400 ]
+[ $EXT_STATUS -eq 200 ]
 
 # State Channels WebSocket API
 WS_STATUS=$(curl -sS -o /dev/null --retry 10 --retry-connrefused \
     -w "%{http_code}" \
-    https://${API_ADDR}/channel)
+    https://${API_ADDR}/channel?role=initiator)
 [ $WS_STATUS -eq 426 ]
