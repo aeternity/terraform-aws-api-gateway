@@ -13,6 +13,9 @@ curl -sSf -L -o /dev/null --retry 10 --retry-connrefused http://${API_ADDR}/v2/s
 # External API
 curl -sSf -o /dev/null --retry 10 --retry-connrefused https://${API_ADDR}/v2/status
 
+# Middleware API
+curl -sSf -o /dev/null --retry 10 --retry-connrefused https://${API_ADDR}/middleware/status
+
 # Internal API (dry-run)
 EXT_STATUS=$(curl -sS -o /dev/null --retry 10 --retry-connrefused \
     -X POST -H 'Content-type: application/json' -d '{"txs": []}' \
