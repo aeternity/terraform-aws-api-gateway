@@ -68,6 +68,12 @@ resource "aws_cloudfront_distribution" "api_gate" {
     max_ttl                = 31536000
   }
 
+  custom_error_response {
+    error_caching_min_ttl = "${var.error_caching_min_ttl}"
+    error_code            = "${var.error_code}"
+    response_code         = "${var.response_code}"
+  }
+
   restrictions {
     geo_restriction {
       restriction_type = "none"
