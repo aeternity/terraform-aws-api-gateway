@@ -69,9 +69,9 @@ resource "aws_cloudfront_distribution" "api_gate" {
   }
 
   custom_error_response {
-    error_caching_min_ttl = "${var.error_caching_min_ttl}"
-    error_code            = "${var.error_code}"
-    response_code         = "${var.response_code}"
+    error_caching_min_ttl = 0
+    error_code            = 404
+    response_code         = 0
   }
 
   restrictions {
