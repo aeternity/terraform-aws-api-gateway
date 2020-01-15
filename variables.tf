@@ -8,3 +8,6 @@ variable "lb_fqdn" {}
 variable "certificate_arn" {}
 variable "env" {}
 variable "mdw_fqdn" {}
+variable "headers" {
+  default = []
+}
