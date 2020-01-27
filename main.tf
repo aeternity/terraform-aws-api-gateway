@@ -35,8 +35,7 @@ resource "aws_cloudfront_distribution" "api_gate" {
       headers      = var.headers
 
       cookies {
-        forward           = "whitelist"
-        whitelisted_names = ["AWSALB"]
+        forward = "none"
       }
     }
 
