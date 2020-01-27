@@ -11,3 +11,6 @@ variable "mdw_fqdn" {}
 variable "headers" {
   default = []
 }
+variable "price_class" {
+  default = "PriceClass_All"
+}

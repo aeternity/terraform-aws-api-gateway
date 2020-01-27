@@ -2,6 +2,8 @@ resource "aws_cloudfront_distribution" "api_gate" {
   enabled = true
   aliases = "${compact(concat(list(var.api_domain), var.api_aliases))}"
 
+  price_class = var.price_class
+
   origin {
     domain_name = var.lb_fqdn
     origin_id   = "api_lb"
