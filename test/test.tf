@@ -59,4 +59,5 @@ module "test_gateway" {
   certificate_arn = "${aws_acm_certificate_validation.cert.certificate_arn}"
   lb_fqdn         = "${local.lb_fqdn}"
   mdw_fqdn        = "${local.mdw_fqdn}"
+  price_class     = "PriceClass_100"
 }
