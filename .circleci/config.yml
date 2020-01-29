@@ -22,6 +22,10 @@ commands:
           command: |
             cd test && terraform validate
       - run:
+          name: Terraform plan
+          command: |
+            cd test && envdir /secrets terraform plan
+      - run:
           name: Integration environment setup
           command: |
             cd test && envdir /secrets terraform apply -parallelism=20 --auto-approve
