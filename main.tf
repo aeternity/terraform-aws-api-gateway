@@ -45,7 +45,7 @@ resource "aws_cloudfront_distribution" "api_gate" {
     viewer_protocol_policy = "redirect-to-https"
     target_origin_id       = "api_lb"
     min_ttl                = 0
-    default_ttl            = 0
+    default_ttl            = var.api_cache_default_ttl
     max_ttl                = 31536000
   }
 
@@ -66,7 +66,7 @@ resource "aws_cloudfront_distribution" "api_gate" {
     viewer_protocol_policy = "redirect-to-https"
     target_origin_id       = "api_mdw"
     min_ttl                = 0
-    default_ttl            = 0
+    default_ttl            = var.mdw_cache_default_ttl
     max_ttl                = 31536000
   }
 
