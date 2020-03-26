@@ -14,3 +14,9 @@ variable "headers" {
 variable "price_class" {
   default = "PriceClass_All"
 }
+variable "api_cache_default_ttl" {
+  default = 0
+}
+variable "mdw_cache_default_ttl" {
+  default = 0
+}
