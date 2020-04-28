@@ -20,3 +20,4 @@ variable "api_cache_default_ttl" {
 variable "mdw_cache_default_ttl" {
   default = 0
 }
+variable "ch_fqdn" {}

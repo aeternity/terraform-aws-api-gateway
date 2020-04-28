@@ -2,6 +2,7 @@ locals {
   api_domain  = format("gw%s%s", var.envid, var.domain_sfx)
   api_aliases = [format("alias%s%s", var.envid, var.domain_sfx)]
   lb_fqdn     = format("lb%s%s", var.envid, var.domain_sfx)
+  ch_fqdn     = format("ch%s%s", var.envid, var.domain_sfx)
   mdw_fqdn    = "testnet.aeternal.io"
 }
 
@@ -59,5 +60,6 @@ module "test_gateway" {
   certificate_arn = "${aws_acm_certificate_validation.cert.certificate_arn}"
   lb_fqdn         = "${local.lb_fqdn}"
   mdw_fqdn        = "${local.mdw_fqdn}"
+  ch_fqdn         = local.ch_fqdn
   price_class     = "PriceClass_100"
 }
