@@ -37,7 +37,7 @@ resource "aws_cloudfront_distribution" "api_gate" {
     custom_origin_config {
       http_port                = 80
       https_port               = 443
-      origin_protocol_policy   = "https-only"
+      origin_protocol_policy   = "http-only"
       origin_ssl_protocols     = ["TLSv1.2"]
       origin_keepalive_timeout = 10
     }
@@ -107,7 +107,7 @@ resource "aws_cloudfront_distribution" "api_gate" {
   }
 
   ordered_cache_behavior {
-    path_pattern    = "/channels"
+    path_pattern    = "/channel"
     allowed_methods = ["HEAD", "DELETE", "POST", "GET", "OPTIONS", "PUT", "PATCH"]
     cached_methods  = ["GET", "HEAD"]
 
