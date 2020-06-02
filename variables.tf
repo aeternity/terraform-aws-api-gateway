@@ -21,3 +21,4 @@ variable "mdw_cache_default_ttl" {
   default = 0
 }
 variable "ch_fqdn" {}
+variable "ae_mdw_fqdn" {}

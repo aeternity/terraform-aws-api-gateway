@@ -43,6 +43,19 @@ resource "aws_cloudfront_distribution" "api_gate" {
     }
   }
 
+origin {
+    domain_name = var.ae_mdw_fqdn
+    origin_id   = "ae_mdw"
+
+    custom_origin_config {
+      http_port                = 80
+      https_port               = 443
+      origin_protocol_policy   = "http-only"
+      origin_ssl_protocols     = ["TLSv1.2"]
+      origin_keepalive_timeout = 10
+    }
+  }
+
   default_cache_behavior {
     allowed_methods = ["HEAD", "DELETE", "POST", "GET", "OPTIONS", "PUT", "PATCH"]
     cached_methods  = ["GET", "HEAD"]
@@ -64,6 +77,7 @@ resource "aws_cloudfront_distribution" "api_gate" {
     max_ttl                = 31536000
   }
 
+  # Cache behavior with precedence 0
   ordered_cache_behavior {
     path_pattern    = "/middleware/*"
     allowed_methods = ["HEAD", "DELETE", "POST", "GET", "OPTIONS", "PUT", "PATCH"]
@@ -85,6 +99,7 @@ resource "aws_cloudfront_distribution" "api_gate" {
     max_ttl                = 31536000
   }
 
+  # Cache behavior with precedence 1
   ordered_cache_behavior {
     path_pattern    = "/websocket"
     allowed_methods = ["GET", "HEAD"]
@@ -106,6 +121,7 @@ resource "aws_cloudfront_distribution" "api_gate" {
     max_ttl                = 31536000
   }
 
+  # Cache behavior with precedence 2
   ordered_cache_behavior {
     path_pattern    = "/channel"
     allowed_methods = ["HEAD", "DELETE", "POST", "GET", "OPTIONS", "PUT", "PATCH"]
@@ -122,6 +138,28 @@ resource "aws_cloudfront_distribution" "api_gate" {
     compress               = true
     viewer_protocol_policy = "redirect-to-https"
     target_origin_id       = "api_ch"
+    min_ttl                = 0
+    default_ttl            = 0
+    max_ttl                = 31536000
+  }
+
+  # Cache behavior with precedence 3
+  ordered_cache_behavior {
+    path_pattern    = "/mdw/*"
+    allowed_methods = ["HEAD", "DELETE", "POST", "GET", "OPTIONS", "PUT", "PATCH"]
+    cached_methods  = ["GET", "HEAD"]
+
+    forwarded_values {
+      query_string = true
+
+      cookies {
+        forward = "none"
+      }
+    }
+
+    compress               = true
+    viewer_protocol_policy = "redirect-to-https"
+    target_origin_id       = "ae_mdw"
     min_ttl                = 0
     default_ttl            = 0
     max_ttl                = 31536000
