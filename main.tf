@@ -45,7 +45,7 @@ resource "aws_cloudfront_distribution" "api_gate" {
 
 origin {
     domain_name = var.ae_mdw_fqdn
-    origin_id   = "ae_mdw"
+    origin_id   = "api_ae_mdw"
 
     custom_origin_config {
       http_port                = 80
@@ -159,7 +159,7 @@ origin {
 
     compress               = true
     viewer_protocol_policy = "redirect-to-https"
-    target_origin_id       = "ae_mdw"
+    target_origin_id       = "api_ae_mdw"
     min_ttl                = 0
     default_ttl            = 0
     max_ttl                = 31536000
