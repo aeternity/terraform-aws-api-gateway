@@ -15,7 +15,7 @@ curl -sSf -o /dev/null --retry 10 --retry-connrefused https://${API_ADDR}/v2/sta
 
 # Middleware API
 curl -sSf -o /dev/null --retry 10 --retry-connrefused https://${API_ADDR}/middleware/status
-curl -sSf -o /dev/null --retry 10 --retry-connrefused https://${API_ADDR}/mdw/txs/count
+curl -sSf -o /dev/null --retry 10 --retry-connrefused https://${API_ADDR}/mdw/status
 
 
 # Internal API (dry-run)
