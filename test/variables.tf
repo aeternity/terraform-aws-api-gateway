@@ -17,7 +17,3 @@ variable "domain_sfx" {
 variable "envid" {
   description = "Unique test environment identifier to prevent collisions."
 }
-
-variable "package" {
-  default = "https://s3.eu-central-1.amazonaws.com/aeternity-node-builds/aeternity-latest-ubuntu-x86_64.tar.gz"
-}

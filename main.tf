@@ -1,6 +1,6 @@
 resource "aws_cloudfront_distribution" "api_gate" {
   enabled = true
-  aliases = "${compact(concat(list(var.api_domain), var.api_aliases))}"
+  aliases = compact(concat(list(var.api_domain), var.api_aliases))
 
   price_class = var.price_class
 
@@ -178,25 +178,25 @@ origin {
   }
 
   viewer_certificate {
-    acm_certificate_arn = "${var.certificate_arn}"
+    acm_certificate_arn = var.certificate_arn
 
     ssl_support_method       = "sni-only"
     minimum_protocol_version = "TLSv1.1_2016"
   }
 
   tags = {
-    env = "${var.env}"
+    env = var.env
   }
 }
 
 resource "aws_route53_record" "api_gate" {
-  zone_id = "${var.dns_zone}"
-  name    = "${var.api_domain}"
+  zone_id = var.dns_zone
+  name    = var.api_domain
   type    = "A"
 
   alias {
-    name                   = "${aws_cloudfront_distribution.api_gate.domain_name}"
-    zone_id                = "${aws_cloudfront_distribution.api_gate.hosted_zone_id}"
+    name                   = aws_cloudfront_distribution.api_gate.domain_name
+    zone_id                = aws_cloudfront_distribution.api_gate.hosted_zone_id
     evaluate_target_health = false
   }
 }
