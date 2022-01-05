@@ -5,6 +5,7 @@ executors:
       - image: aeternity/infrastructure
     working_directory: /src
 
+
 commands:
   integration_tests:
     description: "Integration Tests"
