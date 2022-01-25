@@ -50,7 +50,7 @@ module "test_nodes_sydney_channels" {
 
   spot_price    = "0.15"
   instance_type = "t3.large"
-  ami_name      = "aeternity-ubuntu-16.04-*"
+  ami_name      = "aeternity-ubuntu-18.04-*"
 
   additional_storage      = true
   additional_storage_size = 5
