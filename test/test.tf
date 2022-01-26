@@ -2,7 +2,7 @@ locals {
   api_domain  = format("gw%s%s", var.envid, var.domain_sfx)
   api_aliases = [format("alias%s%s", var.envid, var.domain_sfx)]
   lb_fqdn     = format("lb%s%s", var.envid, var.domain_sfx)
-  mdw_fqdn    = "testnet.aeternal.io"
+  mdw_fqdn    = "testnet.aeternity.io"
   ae_mdw_fqdn = "mdw.testnet.aeternity.io"
 }
 
