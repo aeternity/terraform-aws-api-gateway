@@ -2,7 +2,7 @@ locals {
   api_domain  = format("gw%s%s", var.envid, var.domain_sfx)
   api_aliases = [format("alias%s%s", var.envid, var.domain_sfx)]
   lb_fqdn     = format("lb%s%s", var.envid, var.domain_sfx)
-  mdw_fqdn    = "testnet.aeternal.io"
+  mdw_fqdn    = "testnet.aeternal.aeternity.io"
   ae_mdw_fqdn = "mdw.testnet.aeternity.io"
 }
 
@@ -20,7 +20,7 @@ module "test_nodes_sydney" {
 
   spot_price    = "0.15"
   instance_type = "t3.large"
-  ami_name      = "aeternity-ubuntu-16.04-*"
+  ami_name      = "aeternity-ubuntu-18.04-*"
 
   additional_storage      = true
   additional_storage_size = 5
@@ -50,7 +50,7 @@ module "test_nodes_sydney_channels" {
 
   spot_price    = "0.15"
   instance_type = "t3.large"
-  ami_name      = "aeternity-ubuntu-16.04-*"
+  ami_name      = "aeternity-ubuntu-18.04-*"
 
   additional_storage      = true
   additional_storage_size = 5
