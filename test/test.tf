@@ -7,7 +7,7 @@ locals {
 }
 
 module "test_nodes_sydney" {
-  source            = "github.com/aeternity/terraform-aws-aenode-deploy?ref=master"
+  source            = "github.com/aeternity/terraform-aws-aenode-deploy?ref=test-on-multiple-terraform-versions"
   env               = "test"
   envid             = var.envid
   bootstrap_version = var.bootstrap_version
@@ -33,7 +33,7 @@ module "test_nodes_sydney" {
 }
 
 module "test_nodes_sydney_channels" {
-  source            = "github.com/aeternity/terraform-aws-aenode-deploy?ref=master"
+  source            = "github.com/aeternity/terraform-aws-aenode-deploy?ref=test-on-multiple-terraform-versions"
   env               = "test"
   envid             = var.envid
   bootstrap_version = var.bootstrap_version
@@ -63,7 +63,7 @@ module "test_nodes_sydney_channels" {
 }
 
 module "test_lb_sydney" {
-  source                    = "github.com/aeternity/terraform-aws-api-loadbalancer?ref=master"
+  source                    = "github.com/aeternity/terraform-aws-api-loadbalancer?ref=test-on-multiple-terraform-versions"
   fqdn                      = local.lb_fqdn
   dns_zone                  = var.dns_zone
   sc_security_group         = module.test_nodes_sydney_channels.sg_id
