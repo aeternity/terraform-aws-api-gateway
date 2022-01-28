@@ -1,4 +1,4 @@
-locals {
+testlocals {
   api_domain  = format("gw%s%s", var.envid, var.domain_sfx)
   api_aliases = [format("alias%s%s", var.envid, var.domain_sfx)]
   lb_fqdn     = format("lb%s%s", var.envid, var.domain_sfx)
@@ -7,7 +7,7 @@ locals {
 }
 
 module "test_nodes_sydney" {
-  source            = "github.com/aeternity/terraform-aws-aenode-deploy?ref=test-on-multiple-terraform-versions"
+  source            = "github.com/aeternity/terraform-aws-aenode-deploy?ref=master
   env               = "test"
   envid             = var.envid
   bootstrap_version = var.bootstrap_version
@@ -33,7 +33,7 @@ module "test_nodes_sydney" {
 }
 
 module "test_nodes_sydney_channels" {
-  source            = "github.com/aeternity/terraform-aws-aenode-deploy?ref=test-on-multiple-terraform-versions"
+  source            = "github.com/aeternity/terraform-aws-aenode-deploy?ref=master"
   env               = "test"
   envid             = var.envid
   bootstrap_version = var.bootstrap_version
@@ -63,7 +63,7 @@ module "test_nodes_sydney_channels" {
 }
 
 module "test_lb_sydney" {
-  source                    = "github.com/aeternity/terraform-aws-api-loadbalancer?ref=test-on-multiple-terraform-versions"
+  source                    = "github.com/aeternity/terraform-aws-api-loadbalancer?ref=master"
   fqdn                      = local.lb_fqdn
   dns_zone                  = var.dns_zone
   sc_security_group         = module.test_nodes_sydney_channels.sg_id
