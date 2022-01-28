@@ -7,7 +7,7 @@ testlocals {
 }
 
 module "test_nodes_sydney" {
-  source            = "github.com/aeternity/terraform-aws-aenode-deploy?ref=master
+  source            = "github.com/aeternity/terraform-aws-aenode-deploy?ref=master"
   env               = "test"
   envid             = var.envid
   bootstrap_version = var.bootstrap_version
