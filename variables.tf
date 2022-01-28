@@ -1,7 +1,7 @@
 variable "dns_zone" {}
 variable "api_domain" {}
 variable "api_aliases" {
-  type    = list
+  type    = list(any)
   default = []
 }
 variable "lb_fqdn" {}

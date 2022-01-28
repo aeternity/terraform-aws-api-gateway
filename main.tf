@@ -1,6 +1,6 @@
 resource "aws_cloudfront_distribution" "api_gate" {
   enabled = true
-  aliases = compact(concat(list(var.api_domain), var.api_aliases))
+  aliases = compact(concat([var.api_domain], var.api_aliases))
 
   price_class = var.price_class
 
@@ -43,7 +43,7 @@ resource "aws_cloudfront_distribution" "api_gate" {
     }
   }
 
-origin {
+  origin {
     domain_name = var.ae_mdw_fqdn
     origin_id   = "api_ae_mdw"
 
