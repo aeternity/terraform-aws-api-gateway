@@ -19,7 +19,7 @@ resource "aws_route53_record" "cert_validation" {
   records         = [each.value.record]
   ttl             = 60
   type            = each.value.type
-  zone_id         = var.ops_aeternity_com_zone_id
+  zone_id         = var.dns_zone
 }
 
 resource "aws_acm_certificate_validation" "cert" {
