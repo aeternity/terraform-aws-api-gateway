@@ -79,7 +79,7 @@ workflows:
   test:
     jobs:
       - integration_tests:
-          name: "Run on terraform 0.1.4"
-          terraform_version: "0.1.4"
+          name: "Run on terraform 1.1.4"
+          terraform_version: "1.1.4"
           context: ae-infra-manage
           requires: []
