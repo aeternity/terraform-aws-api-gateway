@@ -7,7 +7,7 @@ variable "vault_addr" {
 }
 
 variable "bootstrap_version" {
-  default = "bump-dataog-agent"
+  default = "master"
 }
 
 variable "domain_sfx" {
