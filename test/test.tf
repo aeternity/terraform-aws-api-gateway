@@ -63,7 +63,7 @@ module "test_nodes_sydney_channels" {
 }
 
 module "test_lb_sydney" {
-  source                    = "github.com/aeternity/terraform-aws-api-loadbalancer?ref=bump-aws-provider"
+  source                    = "github.com/aeternity/terraform-aws-api-loadbalancer?ref=master"
   fqdn                      = local.lb_fqdn
   dns_zone                  = var.dns_zone
   sc_security_group         = module.test_nodes_sydney_channels.sg_id
