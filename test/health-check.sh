@@ -14,7 +14,6 @@ echo "Checking External API"
 curl -sSf -o /dev/null --retry 10 --retry-connrefused https://${API_ADDR}/v2/status
 echo "Checking Middleware API"
 # Middleware API
-curl -sSf -o /dev/null --retry 10 --retry-connrefused https://${API_ADDR}/middleware/status
 curl -sSf -o /dev/null --retry 10 --retry-connrefused https://${API_ADDR}/mdw/status
 
 echo "Checking Internal API (dry-run)"
