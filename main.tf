@@ -151,6 +151,7 @@ resource "aws_cloudfront_distribution" "api_gate" {
 
     forwarded_values {
       query_string = true
+      headers      = "*"
 
       cookies {
         forward = "none"
