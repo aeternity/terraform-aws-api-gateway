@@ -7,8 +7,8 @@ locals {
 }
 
 module "test_nodes_sydney" {
-  source            = "github.com/aeternity/terraform-aws-aenode-deploy?ref=master"
-  env               = "test"
+  source = "github.com/aeternity/terraform-aws-aenode-deploy?ref=master"
+  env    = "test"
 
   static_nodes   = 0
   spot_nodes_min = 1
@@ -42,10 +42,10 @@ module "test_nodes_sydney" {
 }
 
 module "test_nodes_sydney_channels" {
-  source            = "github.com/aeternity/terraform-aws-aenode-deploy?ref=master"
-  env               = "test"
-  subnets           = module.test_nodes_sydney.subnets
-  vpc_id            = module.test_nodes_sydney.vpc_id
+  source  = "github.com/aeternity/terraform-aws-aenode-deploy?ref=master"
+  env     = "test"
+  subnets = module.test_nodes_sydney.subnets
+  vpc_id  = module.test_nodes_sydney.vpc_id
 
   enable_state_channels = true
 
