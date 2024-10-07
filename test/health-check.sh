@@ -2,8 +2,7 @@
 
 set -Euo pipefail
 
-# API_ADDR=$(terraform output -json |jq -r '."api_gate_fqdn"."value"')
-API_ADDR=testnet.aeternity.io
+API_ADDR=$(terraform output -json |jq -r '."api_gate_fqdn"."value"')
 
 FAILED=false
 check_status () {
@@ -12,7 +11,7 @@ check_status () {
     else
         echo "FAILED"
         FAILED=true
-    fi    
+    fi
 }
 
 echo -n "Checking $API_ADDR ... "
@@ -57,7 +56,7 @@ fi
 
 echo -n "Checking Middleware WebSocket API ... "
 # Middleware WebSocket API
-WS_STATUS=$(curl -sS -I -o /dev/null --retry 10 --retry-connrefused \
+WS_STATUS=$(curl -sS -o /dev/null --retry 10 --retry-connrefused \
     -w "%{http_code}" \
     https://${API_ADDR}/mdw/v2/websocket)
 [ $WS_STATUS -eq 426 ]
